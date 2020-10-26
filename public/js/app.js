@@ -3316,7 +3316,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     editItem: function editItem(item) {
+      console.log(item);
       this.editedIndex = this.articles.indexOf(item);
+      console.log(this.editedIndex);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
@@ -3350,7 +3352,15 @@ __webpack_require__.r(__webpack_exports__);
       if (this.editedIndex > -1) {
         var url = "".concat(baseUrl, "/").concat(this.editedItem._id);
         this.axios.put(url, this.editedItem).then(function (res) {
-          Object.assign(_this4.articles[_this4.editedIndex], _this4.editedItem);
+          if (_this4.editedIndex > -1) {
+            console.log(_this4.articles[_this4.editedIndex]);
+            console.log(res);
+            Object.assign(_this4.articles[_this4.editedIndex], _this4.editedItem);
+          } else {
+            console.log(_this4.editedIndex);
+            console.log('壞掉了');
+            console.log(res);
+          }
         });
       } else {
         this.axios.post(baseUrl, this.editedItem).then(function (res) {
@@ -22144,202 +22154,206 @@ var render = function() {
   return _c("v-data-table", {
     staticClass: "elevation-1",
     attrs: { headers: _vm.headers, items: _vm.articles, "sort-by": "title" },
-    scopedSlots: _vm._u([
-      {
-        key: "top",
-        fn: function() {
-          return [
-            _c(
-              "v-toolbar",
-              [
-                _c("v-toolbar-title", [_vm._v("Articles")]),
-                _vm._v(" "),
-                _c("v-divider", {
-                  staticClass: "mx-4",
-                  attrs: { inset: "", vertical: "" }
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex-grow-1" }),
-                _vm._v(" "),
-                _c(
-                  "v-dialog",
-                  {
-                    attrs: { "max-width": "500px" },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "activator",
-                        fn: function(ref) {
-                          var on = ref.on
-                          return [
-                            _c(
-                              "v-btn",
-                              _vm._g(
-                                {
-                                  staticClass: "mb-2",
-                                  attrs: { color: "primary", dark: "" }
-                                },
-                                on
-                              ),
-                              [_vm._v("New Article")]
-                            )
-                          ]
-                        }
-                      }
-                    ]),
-                    model: {
-                      value: _vm.dialog,
-                      callback: function($$v) {
-                        _vm.dialog = $$v
-                      },
-                      expression: "dialog"
-                    }
-                  },
-                  [
-                    _vm._v(" "),
-                    _c(
-                      "v-card",
-                      [
-                        _c("v-card-title", [
-                          _c("span", { staticClass: "headline" }, [
-                            _vm._v(_vm._s(_vm.formTitle))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "v-card-text",
-                          [
-                            _c(
-                              "v-container",
-                              [
-                                _c("v-text-field", {
-                                  attrs: { label: "Title" },
-                                  model: {
-                                    value: _vm.editedItem.title,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.editedItem, "title", $$v)
-                                    },
-                                    expression: "editedItem.title"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("v-textarea", {
-                                  attrs: {
-                                    filled: "",
-                                    label: "Content",
-                                    "auto-grow": ""
+    scopedSlots: _vm._u(
+      [
+        {
+          key: "top",
+          fn: function() {
+            return [
+              _c(
+                "v-toolbar",
+                [
+                  _c("v-toolbar-title", [_vm._v("Articles")]),
+                  _vm._v(" "),
+                  _c("v-divider", {
+                    staticClass: "mx-4",
+                    attrs: { inset: "", vertical: "" }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex-grow-1" }),
+                  _vm._v(" "),
+                  _c(
+                    "v-dialog",
+                    {
+                      attrs: { "max-width": "500px" },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "activator",
+                          fn: function(ref) {
+                            var on = ref.on
+                            return [
+                              _c(
+                                "v-btn",
+                                _vm._g(
+                                  {
+                                    staticClass: "mb-2",
+                                    attrs: { color: "primary", dark: "" }
                                   },
-                                  model: {
-                                    value: _vm.editedItem.content,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.editedItem, "content", $$v)
+                                  on
+                                ),
+                                [_vm._v("New Article")]
+                              )
+                            ]
+                          }
+                        }
+                      ]),
+                      model: {
+                        value: _vm.dialog,
+                        callback: function($$v) {
+                          _vm.dialog = $$v
+                        },
+                        expression: "dialog"
+                      }
+                    },
+                    [
+                      _vm._v(" "),
+                      _c(
+                        "v-card",
+                        [
+                          _c("v-card-title", [
+                            _c("span", { staticClass: "headline" }, [
+                              _vm._v(_vm._s(_vm.formTitle))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-container",
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Title" },
+                                    model: {
+                                      value: _vm.editedItem.title,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.editedItem, "title", $$v)
+                                      },
+                                      expression: "editedItem.title"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-textarea", {
+                                    attrs: {
+                                      filled: "",
+                                      label: "Content",
+                                      "auto-grow": ""
                                     },
-                                    expression: "editedItem.content"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("v-text-field", {
-                                  attrs: { label: "Slug (friendly URL)" },
-                                  model: {
-                                    value: _vm.editedItem.slug,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.editedItem, "slug", $$v)
-                                    },
-                                    expression: "editedItem.slug"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-card-actions",
-                          [
-                            _c("div", { staticClass: "flex-grow-1" }),
-                            _vm._v(" "),
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: { color: "blue darken-1", text: "" },
-                                on: { click: _vm.close }
-                              },
-                              [_vm._v("Cancel")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: { color: "blue darken-1", text: "" },
-                                on: { click: _vm.save }
-                              },
-                              [_vm._v("Save")]
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
+                                    model: {
+                                      value: _vm.editedItem.content,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.editedItem, "content", $$v)
+                                      },
+                                      expression: "editedItem.content"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    attrs: { label: "Slug (friendly URL)" },
+                                    model: {
+                                      value: _vm.editedItem.slug,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.editedItem, "slug", $$v)
+                                      },
+                                      expression: "editedItem.slug"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("div", { staticClass: "flex-grow-1" }),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "blue darken-1", text: "" },
+                                  on: { click: _vm.close }
+                                },
+                                [_vm._v("Cancel")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "blue darken-1", text: "" },
+                                  on: { click: _vm.save }
+                                },
+                                [_vm._v("Save")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ]
+          },
+          proxy: true
         },
-        proxy: true
-      },
-      {
-        key: "item.action",
-        fn: function(ref) {
-          var item = ref.item
-          return [
-            _c(
-              "v-icon",
-              {
-                staticClass: "mr-2",
-                attrs: { small: "" },
-                on: {
-                  click: function($event) {
-                    return _vm.editItem(item)
+        {
+          key: "item.action",
+          fn: function(ref) {
+            var item = ref.item
+            return [
+              _c(
+                "v-icon",
+                {
+                  staticClass: "mr-2",
+                  attrs: { small: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.editItem(item)
+                    }
                   }
-                }
-              },
-              [_vm._v("edit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "v-icon",
-              {
-                attrs: { small: "" },
-                on: {
-                  click: function($event) {
-                    return _vm.deleteItem(item)
+                },
+                [_vm._v("edit")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-icon",
+                {
+                  attrs: { small: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteItem(item)
+                    }
                   }
-                }
-              },
-              [_vm._v("delete")]
-            )
-          ]
+                },
+                [_vm._v("delete")]
+              )
+            ]
+          }
+        },
+        {
+          key: "no-data",
+          fn: function() {
+            return [
+              _c(
+                "v-btn",
+                { attrs: { color: "primary" }, on: { click: _vm.initialize } },
+                [_vm._v("Reset")]
+              )
+            ]
+          },
+          proxy: true
         }
-      },
-      {
-        key: "no-data",
-        fn: function() {
-          return [
-            _c(
-              "v-btn",
-              { attrs: { color: "primary" }, on: { click: _vm.initialize } },
-              [_vm._v("Reset")]
-            )
-          ]
-        },
-        proxy: true
-      }
-    ])
+      ],
+      null,
+      true
+    )
   })
 }
 var staticRenderFns = []

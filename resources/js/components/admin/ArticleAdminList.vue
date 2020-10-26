@@ -32,7 +32,7 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.action="{ item }">
+    <template v-slot:[`item.action`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
       <v-icon small @click="deleteItem(item)">delete</v-icon>
     </template>
@@ -96,7 +96,9 @@ export default {
     },
 
     editItem(item) {
+      console.log(item);
       this.editedIndex = this.articles.indexOf(item);
+      console.log(this.editedIndex);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
@@ -129,7 +131,15 @@ export default {
       if (this.editedIndex > -1) {
         const url = `${baseUrl}/${this.editedItem._id}`;
         this.axios.put(url, this.editedItem).then(res => {
-          Object.assign(this.articles[this.editedIndex], this.editedItem);
+          if (this.editedIndex > -1) {
+            console.log(this.articles[this.editedIndex])
+            console.log(res)
+            Object.assign(this.articles[this.editedIndex], this.editedItem);
+          }else{
+            console.log(this.editedIndex)
+            console.log('壞掉了')
+            console.log(res)
+          }
         });
       } else {
         this.axios.post(baseUrl, this.editedItem).then(res => {
