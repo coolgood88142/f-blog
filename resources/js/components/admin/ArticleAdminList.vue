@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import swal from "sweetalert"
+
 export default {
   data: () => ({
     dialog: false,
@@ -105,16 +107,21 @@ export default {
 
     deleteItem(item) {
       const index = this.articles.indexOf(item);
-      const deleteConfirmed = confirm(
-        "Are you sure you want to delete this article?"
-      );
-
-      if (deleteConfirmed) {
-        const url = `/api/articles/${item._id}`;
-        this.axios.delete(url, this.editedItem).then(res => {
-          this.articles.splice(index, 1);
-        });
-      }
+      const deleteConfirmed = false;
+      swal({
+        title: "Are you sure you want to delete this article?",
+        icon: "warning",
+        buttons:  ["取消", "確定"],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          const url = `/api/articles/${item._id}`;
+          this.axios.delete(url, this.editedItem).then(res => {
+            this.articles.splice(index, 1);
+          });
+        } 
+      });
     },
 
     close() {
@@ -132,15 +139,17 @@ export default {
         const url = `${baseUrl}/${this.editedItem._id}`;
         this.axios.put(url, this.editedItem).then(res => {
           if (this.editedIndex > -1) {
-            console.log(this.articles[this.editedIndex])
-            console.log(res)
             Object.assign(this.articles[this.editedIndex], this.editedItem);
-          }else{
-            console.log(this.editedIndex)
-            console.log('壞掉了')
-            console.log(res)
           }
-        });
+        }).catch((error) => {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else {
+            console.log('Error', error.message);
+          }
+        })
       } else {
         this.axios.post(baseUrl, this.editedItem).then(res => {
           this.articles.push(res.data.article);

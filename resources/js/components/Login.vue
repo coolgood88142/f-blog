@@ -68,6 +68,7 @@ export default {
         },
         error: function() {
           app.has_error = true;
+          console.log(app);
         },
         rememberMe: true
       });
