@@ -119,7 +119,21 @@ export default {
           const url = `/api/articles/${item._id}`;
           this.axios.delete(url, this.editedItem).then(res => {
             this.articles.splice(index, 1);
-          });
+          }).catch((error) => {
+            let message = "執行失敗!"
+            if (error.response) {
+              message = error.response.data.message
+            } else {
+              message = error.message
+            }
+
+            swal({
+              title: message,
+              icon: "error",
+              buttons:  "確定",
+              dangerMode: true,
+            })
+          })
         } 
       });
     },
@@ -134,7 +148,6 @@ export default {
 
     save() {
       const baseUrl = "/api/articles";
-
       if (this.editedIndex > -1) {
         const url = `${baseUrl}/${this.editedItem._id}`;
         this.axios.put(url, this.editedItem).then(res => {
@@ -142,13 +155,19 @@ export default {
             Object.assign(this.articles[this.editedIndex], this.editedItem);
           }
         }).catch((error) => {
+          let message = "執行失敗!"
           if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            message = error.response.data.message
           } else {
-            console.log('Error', error.message);
+            message = error.message
           }
+
+          swal({
+            title: message,
+            icon: "error",
+            buttons:  "確定",
+            dangerMode: true,
+          })
         })
       } else {
         this.axios.post(baseUrl, this.editedItem).then(res => {

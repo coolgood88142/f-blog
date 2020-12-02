@@ -3061,9 +3061,24 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    var url = "/api/articles/".concat(this.$route.params.slug);
+    var url = "/api/artic4les/".concat(this.$route.params.slug);
     this.axios.get(url).then(function (res) {
       _this.article = res.data[0];
+    })["catch"](function (error) {
+      var message = "執行失敗!";
+
+      if (error.response) {
+        message = error.response.data.message;
+      } else {
+        message = error.message;
+      }
+
+      swal({
+        title: message,
+        icon: "error",
+        buttons: "確定",
+        dangerMode: true
+      });
     });
   }
 });
@@ -3145,6 +3160,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -3176,6 +3193,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3217,7 +3235,12 @@ __webpack_require__.r(__webpack_exports__);
         },
         error: function error() {
           app.has_error = true;
-          console.log(app);
+          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+            title: "登入失敗",
+            icon: "error",
+            buttons: "確定",
+            dangerMode: true
+          });
         },
         rememberMe: true
       });
@@ -3364,6 +3387,21 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.axios["delete"](url, _this2.editedItem).then(function (res) {
             _this2.articles.splice(index, 1);
+          })["catch"](function (error) {
+            var message = "執行失敗!";
+
+            if (error.response) {
+              message = error.response.data.message;
+            } else {
+              message = error.message;
+            }
+
+            sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+              title: message,
+              icon: "error",
+              buttons: "確定",
+              dangerMode: true
+            });
           });
         }
       });
@@ -3389,13 +3427,20 @@ __webpack_require__.r(__webpack_exports__);
             Object.assign(_this4.articles[_this4.editedIndex], _this4.editedItem);
           }
         })["catch"](function (error) {
+          var message = "執行失敗!";
+
           if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            message = error.response.data.message;
           } else {
-            console.log('Error', error.message);
+            message = error.message;
           }
+
+          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+            title: message,
+            icon: "error",
+            buttons: "確定",
+            dangerMode: true
+          });
         });
       } else {
         this.axios.post(baseUrl, this.editedItem).then(function (res) {

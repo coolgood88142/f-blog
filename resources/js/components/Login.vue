@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import swal from "sweetalert"
+
 export default {
   data: () => ({
     valid: false,
@@ -68,7 +70,12 @@ export default {
         },
         error: function() {
           app.has_error = true;
-          console.log(app);
+          swal({
+            title: "登入失敗",
+            icon: "error",
+            buttons:  "確定",
+            dangerMode: true,
+          })
         },
         rememberMe: true
       });

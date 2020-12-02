@@ -17,10 +17,24 @@ export default {
     article: {}
   }),
   created() {
-    const url = `/api/articles/${this.$route.params.slug}`;
+    const url = `/api/artic4les/${this.$route.params.slug}`;
     this.axios.get(url).then(res => {
       this.article = res.data[0];
-    });
+    }).catch((error) => {
+      let message = "執行失敗!"
+      if (error.response) {
+        message = error.response.data.message
+      } else {
+        message = error.message
+      }
+
+      swal({
+        title: message,
+        icon: "error",
+        buttons:  "確定",
+        dangerMode: true,
+      })
+    })
   }
 };
 </script>
