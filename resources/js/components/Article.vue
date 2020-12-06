@@ -24,16 +24,8 @@ export default {
       let message = "執行失敗!"
       if (error.response) {
         message = error.response.data.message
-      } else {
-        message = error.message
-      }
-
-      swal({
-        title: message,
-        icon: "error",
-        buttons:  "確定",
-        dangerMode: true,
-      })
+      } 
+      this.$emit('showMessage', message, "error", "確定")
     })
   }
 };

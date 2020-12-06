@@ -70,12 +70,7 @@ export default {
         },
         error: function() {
           app.has_error = true;
-          swal({
-            title: "登入失敗",
-            icon: "error",
-            buttons:  "確定",
-            dangerMode: true,
-          })
+          this.$emit('showMessage', "登入失敗!", "error", "確定")
         },
         rememberMe: true
       });

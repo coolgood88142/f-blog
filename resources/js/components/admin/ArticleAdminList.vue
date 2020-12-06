@@ -44,7 +44,6 @@
 
 <script>
 import swal from "sweetalert"
-
 export default {
   data: () => ({
     dialog: false,
@@ -107,32 +106,23 @@ export default {
 
     deleteItem(item) {
       const index = this.articles.indexOf(item);
-      const deleteConfirmed = false;
       swal({
         title: "Are you sure you want to delete this article?",
         icon: "warning",
-        buttons:  ["取消", "確定"],
+        buttons:  ["取消", "正確"],
         dangerMode: true,
       })
       .then((willDelete) => {
         if (willDelete) {
-          const url = `/api/articles/${item._id}`;
+          const url = `/api/aa/${item._id}`;
           this.axios.delete(url, this.editedItem).then(res => {
             this.articles.splice(index, 1);
           }).catch((error) => {
-            let message = "執行失敗!"
+            let message = "刪除失敗!"
             if (error.response) {
               message = error.response.data.message
-            } else {
-              message = error.message
-            }
-
-            swal({
-              title: message,
-              icon: "error",
-              buttons:  "確定",
-              dangerMode: true,
-            })
+            } 
+            this.$emit('showMessage', message, "error", "正確")
           })
         } 
       });
@@ -148,6 +138,8 @@ export default {
 
     save() {
       const baseUrl = "/api/articles";
+      let icon = "warning";
+      let determine = "確定";
       if (this.editedIndex > -1) {
         const url = `${baseUrl}/${this.editedItem._id}`;
         this.axios.put(url, this.editedItem).then(res => {
@@ -155,24 +147,22 @@ export default {
             Object.assign(this.articles[this.editedIndex], this.editedItem);
           }
         }).catch((error) => {
-          let message = "執行失敗!"
+          let message = "新增失敗!"
           if (error.response) {
             message = error.response.data.message
-          } else {
-            message = error.message
-          }
-
-          swal({
-            title: message,
-            icon: "error",
-            buttons:  "確定",
-            dangerMode: true,
-          })
+          } 
+          this.$emit('showMessage', message, icon, determine)
         })
       } else {
         this.axios.post(baseUrl, this.editedItem).then(res => {
           this.articles.push(res.data.article);
-        });
+        }).catch((error) => {
+          let message = "更新失敗!"
+          if (error.response) {
+            message = error.response.data.message
+          } 
+          this.$emit('showMessage', message, icon, determine)
+        })
       }
 
       this.close();

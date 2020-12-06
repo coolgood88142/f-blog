@@ -27,12 +27,13 @@
     </div>
     <v-content>
       <transition appear name="fade">
-        <router-view></router-view>
+        <router-view @showMessage="showMessage"></router-view>
       </transition>
     </v-content>
   </v-app>
 </template>;
 <script>
+import swal from "sweetalert"
 export default {
   data: () => ({
     drawer: null,
@@ -58,6 +59,15 @@ export default {
             .catch(err => {});
         }
       });
+    },
+
+    showMessage(message, icon, buttons) {
+      swal({
+        title: message,
+        icon: icon,
+        buttons:  buttons,
+        dangerMode: true,
+      })
     }
   }
 };

@@ -3069,16 +3069,9 @@ __webpack_require__.r(__webpack_exports__);
 
       if (error.response) {
         message = error.response.data.message;
-      } else {
-        message = error.message;
       }
 
-      swal({
-        title: message,
-        icon: "error",
-        buttons: "確定",
-        dangerMode: true
-      });
+      _this.$emit('showMessage', message, "error", "確定");
     });
   }
 });
@@ -3235,12 +3228,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         error: function error() {
           app.has_error = true;
-          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
-            title: "登入失敗",
-            icon: "error",
-            buttons: "確定",
-            dangerMode: true
-          });
+          this.$emit('showMessage', "登入失敗!", "error", "確定");
         },
         rememberMe: true
       });
@@ -3375,33 +3363,25 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var index = this.articles.indexOf(item);
-      var deleteConfirmed = false;
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
         title: "Are you sure you want to delete this article?",
         icon: "warning",
-        buttons: ["取消", "確定"],
+        buttons: ["取消", "正確"],
         dangerMode: true
       }).then(function (willDelete) {
         if (willDelete) {
-          var url = "/api/articles/".concat(item._id);
+          var url = "/api/aa/".concat(item._id);
 
           _this2.axios["delete"](url, _this2.editedItem).then(function (res) {
             _this2.articles.splice(index, 1);
           })["catch"](function (error) {
-            var message = "執行失敗!";
+            var message = "刪除失敗!";
 
             if (error.response) {
               message = error.response.data.message;
-            } else {
-              message = error.message;
             }
 
-            sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
-              title: message,
-              icon: "error",
-              buttons: "確定",
-              dangerMode: true
-            });
+            _this2.$emit('showMessage', message, "error", "正確");
           });
         }
       });
@@ -3419,6 +3399,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       var baseUrl = "/api/articles";
+      var icon = "warning";
+      var determine = "確定";
 
       if (this.editedIndex > -1) {
         var url = "".concat(baseUrl, "/").concat(this.editedItem._id);
@@ -3427,24 +3409,25 @@ __webpack_require__.r(__webpack_exports__);
             Object.assign(_this4.articles[_this4.editedIndex], _this4.editedItem);
           }
         })["catch"](function (error) {
-          var message = "執行失敗!";
+          var message = "新增失敗!";
 
           if (error.response) {
             message = error.response.data.message;
-          } else {
-            message = error.message;
           }
 
-          sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
-            title: message,
-            icon: "error",
-            buttons: "確定",
-            dangerMode: true
-          });
+          _this4.$emit('showMessage', message, icon, determine);
         });
       } else {
         this.axios.post(baseUrl, this.editedItem).then(function (res) {
           _this4.articles.push(res.data.article);
+        })["catch"](function (error) {
+          var message = "更新失敗!";
+
+          if (error.response) {
+            message = error.response.data.message;
+          }
+
+          _this4.$emit('showMessage', message, icon, determine);
         });
       }
 
@@ -3464,6 +3447,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -3498,6 +3483,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3522,6 +3508,14 @@ __webpack_require__.r(__webpack_exports__);
             name: "articles"
           })["catch"](function (err) {});
         }
+      });
+    },
+    showMessage: function showMessage(message, icon, buttons) {
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+        title: message,
+        icon: icon,
+        buttons: buttons,
+        dangerMode: true
       });
     }
   }
@@ -22528,7 +22522,7 @@ var render = function() {
           _c(
             "transition",
             { attrs: { appear: "", name: "fade" } },
-            [_c("router-view")],
+            [_c("router-view", { on: { showMessage: _vm.showMessage } })],
             1
           )
         ],
